@@ -2,11 +2,13 @@
 using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Interactions;
+using Common;
 
 namespace Slave
 {
     class Program
     {
+        static ConfigChrome _config = ConfigManager<ConfigChrome>.Instance.Config;
         public static void Main(string[] args)
         {
             int TimeToWatchVideo = new Random().Next(5,7);
@@ -50,26 +52,37 @@ namespace Slave
             };
             string email = "quynhdonghy2001@gmail.com";
             string password = "Cuonggiun1";
-            IWebDriver driver = new ChromeDriver();
-            Actions actions = new Actions(driver);
 
+            string profileID = "64a3d2cd6bc6bb5b9f013500";
+
+            ChromeOptions options = new();
+            options.BinaryLocation = _config.BinaryLocation;
+            options.AddArgument(_config.UserDataDir.Replace("{id}", profileID));
+            options.AddArgument(_config.Extension.Replace("{id}", profileID));
+            options.AddArguments("--disable-default-apps", "--disable-extensions");
+            options.AddArguments(_config.Arguments);
+
+            IWebDriver driver = new ChromeDriver();
+
+            driver.Manage().Window.Size = new System.Drawing.Size(350, 350);
+            Actions actions = new Actions(driver);
             FilmScriptLoginGoogle(driver, email, password);
 
             ((IJavaScriptExecutor)driver).ExecuteScript("window.open();");
             driver.SwitchTo().Window(driver.WindowHandles.Last());
-            while(true)
+            while (true)
             {
                 foreach (string keyword in keywords)
                 {
                     Console.WriteLine("(==================================================)");
-                    Extension.WriteLine($"Tìm kiếm video mới : {keyword}",ConsoleColor.Green);
-                    FilmScriptYoutobe(driver, keyword,channels,comments,icons,TimeToWatchVideo);
+                    Extension.WriteLine($"Tìm kiếm video mới : {keyword}", ConsoleColor.Green);
+                    FilmScriptYoutobe(driver, keyword, channels, comments, icons, TimeToWatchVideo);
                 }
                 if (DateTime.Now - startTime >= timeOut)
                 {
-                    break; 
+                    break;
                 }
-                Thread.Sleep(1000); 
+                Thread.Sleep(1000);
             }
             driver.Quit();
         }
@@ -79,6 +92,7 @@ namespace Slave
             if(google.CheckLoginGoogle() == true)
             {
                 google.EnterEmail(email); 
+                Thread.Sleep(2000);
                 google.EnterPassword(password);
             }
             

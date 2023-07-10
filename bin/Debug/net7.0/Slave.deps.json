@@ -9,6 +9,7 @@
       "Slave/1.0.0": {
         "dependencies": {
           "DotNetSeleniumExtras.WaitHelpers": "3.11.0",
+          "Mype.Common": "1.0.1",
           "Selenium.Support": "4.10.0",
           "Selenium.WebDriver": "4.10.0",
           "Selenium.WebDriver.ChromeDriver": "114.0.5735.9000"
@@ -25,6 +26,14 @@
           "lib/netstandard2.0/SeleniumExtras.WaitHelpers.dll": {
             "assemblyVersion": "3.11.0.0",
             "fileVersion": "3.11.0.0"
+          }
+        }
+      },
+      "Mype.Common/1.0.1": {
+        "runtime": {
+          "lib/net7.0/Common.dll": {
+            "assemblyVersion": "1.0.1.0",
+            "fileVersion": "1.0.1.0"
           }
         }
       },
@@ -73,6 +82,13 @@
       "sha512": "sha512-xc6jVVl5ymgk3ZNWnC/KHxkEup1QpnwYbrwF+NQoCOGERsD8YMlLwmsX4lGhLXCLo/YQTRTIwlKCN9E/doGUNg==",
       "path": "dotnetseleniumextras.waithelpers/3.11.0",
       "hashPath": "dotnetseleniumextras.waithelpers.3.11.0.nupkg.sha512"
+    },
+    "Mype.Common/1.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-qqfJChv3J7HuUeZauPbeHQL4fLSyzX2nBGZYtv6P86aisCgXJ/L+IEPFjKnoKo8I06N5dpou4pKT3GO2oqeVWQ==",
+      "path": "mype.common/1.0.1",
+      "hashPath": "mype.common.1.0.1.nupkg.sha512"
     },
     "Newtonsoft.Json/13.0.1": {
       "type": "package",

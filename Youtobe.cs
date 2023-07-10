@@ -1,4 +1,6 @@
 using System;
+using System.Xml.Linq;
+using Common;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
@@ -10,20 +12,21 @@ namespace Slave
         public Youtobe(IWebDriver driver)
         {
             this.driver = driver;
-           
         }
+        static ConfigYoutobe _config = ConfigManager<ConfigYoutobe>.Instance.Config;
         private Actions Actions => new Actions(driver);
         private WebDriverWait wait => new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-        private By elementYoutobeSearch => By.Name("search_query");
-        private By elementFirstVideo => By.CssSelector("ytd-video-renderer");
-        private By elementLikeButton => By.XPath("/html/body/ytd-app/div[1]/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[2]/ytd-watch-metadata/div/div[2]/div[2]/div/div/ytd-menu-renderer/div[1]/ytd-segmented-like-dislike-button-renderer/yt-smartimation/div/div[1]/ytd-toggle-button-renderer/yt-button-shape/button");
-        private By elementSubscribeButton => By.XPath("/html/body/ytd-app/div[1]/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[2]/ytd-watch-metadata/div/div[2]/div[1]/div/ytd-subscribe-button-renderer/yt-smartimation/yt-button-shape/button");
-        private By elementInputComment => By.XPath("/html/body/ytd-app/div[1]/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[2]/ytd-comments/ytd-item-section-renderer/div[1]/ytd-comments-header-renderer/div[5]/ytd-comment-simplebox-renderer/div[1]");
-        private By elementInputCommentText => By.XPath("/html/body/ytd-app/div[1]/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[2]/ytd-comments/ytd-item-section-renderer/div[1]/ytd-comments-header-renderer/div[5]/ytd-comment-simplebox-renderer/div[3]/ytd-comment-dialog-renderer/ytd-commentbox/div[2]/div/div[2]/tp-yt-paper-input-container/div[2]/div/div[1]/ytd-emoji-input/yt-user-mention-autosuggest-input/yt-formatted-string/div");
-        private By elementButtonComment => By.XPath("/html/body/ytd-app/div[1]/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[2]/ytd-comments/ytd-item-section-renderer/div[1]/ytd-comments-header-renderer/div[5]/ytd-comment-simplebox-renderer/div[3]/ytd-comment-dialog-renderer/ytd-commentbox/div[2]/div/div[4]/div[5]/ytd-button-renderer[2]/yt-button-shape/button");
-        private By elementLinkTabRight => By.CssSelector(".yt-simple-endpoint.inline-block.style-scope.ytd-thumbnail");
-        private By elementChannelTabRight => By.CssSelector("a.yt-simple-endpoint.style-scope.ytd-compact-video-renderer");
-        private By elementChannelCurrent => By.XPath("/html/body/ytd-app/div[1]/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[2]/ytd-watch-metadata/div/div[2]/div[1]/ytd-video-owner-renderer/div[1]/ytd-channel-name/div/div/yt-formatted-string/a");
+        private By elementButtonSearch => By.XPath(_config.ButtonIconSearch);
+        private By elementYoutobeSearch => By.Name(_config.InputSearch);
+        private By elementFirstVideo => By.CssSelector(_config.FirstVideo);
+        private By elementLikeButton => By.XPath(_config.LikeVideo);
+        private By elementSubscribeButton => By.XPath(_config.SubscribeVideo);
+        private By elementInputComment => By.XPath(_config.Commnent);
+        private By elementInputCommentText => By.XPath(_config.InputComment);
+        private By elementButtonComment => By.XPath(_config.ButtonComment);
+        private By elementLinkTabRight => By.CssSelector("");
+        private By elementChannelTabRight => By.CssSelector(_config.ChannelTabsRight);
+        private By elementChannelCurrent => By.XPath(_config.ChannelCurrent);
         public void GotoUrl(string url = "https://www.youtube.com")
         {
             driver.Navigate().GoToUrl(url);
@@ -32,8 +35,10 @@ namespace Slave
         {
             try
             {
+                IWebElement buttonSearch = wait.Until(driver => driver.FindElement(elementButtonSearch));
+                Actions.MoveToElement(buttonSearch).Click().Perform();
                 IWebElement element = wait.Until(driver => driver.FindElement(elementYoutobeSearch));
-                Actions.Click(element) // Nhấp vào phần tử để đảm bảo nó được chọn
+                Actions.MoveToElement(element).Click() // Nhấp vào phần tử để đảm bảo nó được chọn
                         .KeyDown(Keys.Control)
                         .SendKeys("a")
                         .KeyUp(Keys.Control)
@@ -43,10 +48,11 @@ namespace Slave
                 foreach (var a in keyword)
                 {
                     element.SendKeys(a.ToString());
-                    int pause = r.Next(300, 500);
+                    int pause = r.Next(100, 300);
                     Thread.Sleep(pause);
                 }
                 Actions.SendKeys(element, Keys.Enter).Perform();
+                Thread.Sleep(2000);
                 ChooseVideo();
             }
             catch (NoSuchElementException)
@@ -59,7 +65,8 @@ namespace Slave
             try
             {
                 IWebElement element = wait.Until(driver => driver.FindElement(elementFirstVideo));
-                Actions.Click(element).Perform();
+                Thread.Sleep(2000);
+                Actions.MoveToElement(element).Click().Perform();
                 // Thread.Sleep(TimeSpan.FromMinutes(time));
             }
             catch (NoSuchElementException)
@@ -69,13 +76,22 @@ namespace Slave
         }
         public void LikeVideo()
         {
+            Random r = new Random();
+            int yPst = 0;
+            for (int i = 0; i < 5; i++)
+            {
+                yPst += 500;
+                Extension.ScrollTo(driver, xPosition: 0, yPosition: yPst);
+                int pause = r.Next(500, 2000);
+                Thread.Sleep(pause);
+            }
             try
             {
                 IWebElement element = wait.Until(driver => driver.FindElement(elementLikeButton));
                 string classAttribute = element.GetAttribute("aria-pressed");
                 if (classAttribute == "false")
                 {
-                    Actions.Click(element).Perform();
+                    Actions.MoveToElement(element).Click().Perform();
                     Extension.WriteLine("Đã thích video thành công", ConsoleColor.Blue);
                 }
                 else
@@ -98,7 +114,7 @@ namespace Slave
 
                 if (string.Equals(checkSubcribe.Text, "Đăng ký", StringComparison.OrdinalIgnoreCase) == true)
                 {
-                    Actions.Click(element).Perform();
+                    Actions.MoveToElement(element).Click().Perform();
                     Extension.WriteLine("Đã đăng ký video thành công", ConsoleColor.Blue);
                   
                 }
@@ -114,21 +130,34 @@ namespace Slave
         }
         public void CommentVideo(string[] comments, string[] icons)
         {
+            Random r = new Random();
+            int yPst = 0;
+            for (int i = 0; i < 10; i++)
+            {
+                yPst += 500;
+                Extension.ScrollTo(driver, xPosition: 0, yPosition: yPst);
+                int pause = r.Next(500, 2000);
+                Thread.Sleep(pause);
+            }
+
             if (comments.Count() > 0 || icons.Count() > 0)
             {
-                Random r = new Random();
+               
                 int indexComment = r.Next(0, comments.Length);
                 int indexIcon = r.Next(0, icons.Length);
                 string randomComment = $"{comments[indexComment]} {icons[indexIcon]}";
                 try
                 {
+                   
                     IWebElement elementInput = wait.Until(driver => driver.FindElement(elementInputComment));
-                    Actions.Click(elementInput).Perform();
+                    
+                    
+                    Actions.MoveToElement(elementInput).Click().Perform();
 
                     IWebElement elementCommentText = wait.Until(driver => driver.FindElement(elementInputCommentText));
 
                    
-                     Actions.Click(elementCommentText) // Nhấp vào phần tử để đảm bảo nó được chọn
+                     Actions.MoveToElement(elementCommentText).Click() // Nhấp vào phần tử để đảm bảo nó được chọn
                             .KeyDown(Keys.Control)
                             .SendKeys("a")
                             .KeyUp(Keys.Control)
@@ -141,7 +170,7 @@ namespace Slave
                         Thread.Sleep(pause);
                     }
                     IWebElement elementButton = wait.Until(driver => driver.FindElement(elementButtonComment));
-                    elementButton.Click();
+                    Actions.MoveToElement(elementButton).Click().Perform();
                     Extension.WriteLine("Comment video thành công.", ConsoleColor.Blue);
                 }
                 catch (Exception e)
@@ -164,7 +193,7 @@ namespace Slave
                     {
                         Console.WriteLine("===========");
                         Console.WriteLine(href, url);
-                        item.Click();
+                        Actions.MoveToElement(item).Click().Perform();
                         found = true;
                         break;
                     }
@@ -195,14 +224,14 @@ namespace Slave
                     if(channelName.Contains(channel) == true)
                     {
                         Extension.WriteLine($"Chuyển xem video tiếp theo của kênh {channel} thành công", ConsoleColor.Blue);
-                        Actions.Click(item).Perform();
+                        Actions.MoveToElement(item).Click().Perform();
                         break;
                     }
                     else if(channelName.Contains(currentChannelName) == true)
                     {
                         Extension.WriteLine($"Không tìm thấy kênh {channel}", ConsoleColor.Red);
                         Extension.WriteLine($"Chuyển xem video tiếp theo của kênh {currentChannelName} thành công", ConsoleColor.Blue);
-                        Actions.Click(item).Perform();
+                        Actions.MoveToElement(item).Click().Perform();
                         break;
                     }
                 }

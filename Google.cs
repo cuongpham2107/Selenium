@@ -2,6 +2,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
+using Common;
 namespace Slave
 {
     public class Google : DriverHelper
@@ -11,12 +12,13 @@ namespace Slave
         {
            this.driver = driver;
         }
+        static ConfigGoogle _config = ConfigManager<ConfigGoogle>.Instance.Config;
         private Actions Actions => new Actions(driver);
-        private WebDriverWait wait => new WebDriverWait(driver, TimeSpan.FromSeconds(20));
-        private IWebElement emailTextBox => wait.Until(driver => driver.FindElement(By.Id("identifierId")));
-        private IWebElement passWordTextBox => wait.Until(driver => driver.FindElement(By.Name("Passwd")));
-        private IWebElement elementCheckLogin => wait.Until(driver => driver.FindElement(By.XPath("/html/body/div[1]/div[1]/div[2]/div/c-wiz/div/div[1]/div/h1/span")));
-        public IWebElement elementAccount => wait.Until(driver => driver.FindElement(By.XPath("/html/body")));
+        private WebDriverWait wait => new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+        private IWebElement emailTextBox => wait.Until(driver => driver.FindElement(By.Id(_config.InputEmailGoogle)));
+        private IWebElement passWordTextBox => wait.Until(driver => driver.FindElement(By.Name(_config.IntputPasswordGooogle)));
+        private IWebElement elementCheckLogin => wait.Until(driver => driver.FindElement(By.XPath(_config.CheckLogin)));
+        public IWebElement elementAccount => wait.Until(driver => driver.FindElement(By.XPath(_config.AccountLogin)));
         public void GoToUrl(string url = "http://accounts.google.com")
         {
             driver.Navigate().GoToUrl(url);
@@ -26,16 +28,16 @@ namespace Slave
         {
             try
             {
-                Actions.Click(emailTextBox) // Nhấp vào phần tử để đảm bảo nó được chọn
-                    .KeyDown(Keys.Control)
-                    .SendKeys("a")
-                    .KeyUp(Keys.Control)
-                    .SendKeys(Keys.Delete)
-                    .Perform();
+                Actions.MoveToElement(emailTextBox).Click()
+                        .KeyDown(Keys.Control)
+                        .SendKeys("a")
+                        .KeyUp(Keys.Control)
+                        .SendKeys(Keys.Delete)
+                        .Perform();
                 Random r = new();
                 foreach(var a in email){
                     emailTextBox.SendKeys(a.ToString());
-                    int pause = r.Next(300,500);
+                    int pause = r.Next(100,300);
                     Thread.Sleep(pause);
                 }
                 Actions.SendKeys(emailTextBox, Keys.Enter).Perform();
@@ -49,7 +51,7 @@ namespace Slave
         public void EnterPassword(string password){
             try
             {
-                Actions.Click(passWordTextBox) // Nhấp vào phần tử để đảm bảo nó được chọn
+                Actions.MoveToElement(passWordTextBox).Click() // Nhấp vào phần tử để đảm bảo nó được chọn
                     .KeyDown(Keys.Control)
                     .SendKeys("a")
                     .KeyUp(Keys.Control)
@@ -75,7 +77,7 @@ namespace Slave
             try
             {
                 string check =  elementCheckLogin.Text;
-                if(check == "Đăng nhập")
+                if(check == "Đăng nhập" || check == "Sign in")
                 {
                     return true;
                 }

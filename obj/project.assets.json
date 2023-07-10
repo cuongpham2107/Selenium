@@ -14,6 +14,19 @@
           "lib/netstandard2.0/SeleniumExtras.WaitHelpers.dll": {}
         }
       },
+      "Mype.Common/1.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/net7.0/Common.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net7.0/Common.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Newtonsoft.Json/13.0.1": {
         "type": "package",
         "compile": {
@@ -76,6 +89,18 @@
         "lib/net40/SeleniumExtras.WaitHelpers.dll",
         "lib/net45/SeleniumExtras.WaitHelpers.dll",
         "lib/netstandard2.0/SeleniumExtras.WaitHelpers.dll"
+      ]
+    },
+    "Mype.Common/1.0.1": {
+      "sha512": "qqfJChv3J7HuUeZauPbeHQL4fLSyzX2nBGZYtv6P86aisCgXJ/L+IEPFjKnoKo8I06N5dpou4pKT3GO2oqeVWQ==",
+      "type": "package",
+      "path": "mype.common/1.0.1",
+      "files": [
+        ".nupkg.metadata",
+        "lib/net7.0/Common.dll",
+        "lib/net7.0/Common.xml",
+        "mype.common.1.0.1.nupkg.sha512",
+        "mype.common.nuspec"
       ]
     },
     "Newtonsoft.Json/13.0.1": {
@@ -173,32 +198,46 @@
   "projectFileDependencyGroups": {
     "net7.0": [
       "DotNetSeleniumExtras.WaitHelpers >= 3.11.0",
+      "Mype.Common >= 1.0.1",
       "Selenium.Support >= 4.10.0",
       "Selenium.WebDriver >= 4.10.0",
       "Selenium.WebDriver.ChromeDriver >= 114.0.5735.9000"
     ]
   },
   "packageFolders": {
-    "/Users/phamcuong/.nuget/packages/": {}
+    "C:\\Users\\trick\\.nuget\\packages\\": {},
+    "C:\\Program Files\\DevExpress 22.2\\Components\\Offline Packages": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/phamcuong/C#/Slave/Slave.csproj",
+      "projectUniqueName": "C:\\Users\\trick\\source\\repos\\Selenium\\Slave.csproj",
       "projectName": "Slave",
-      "projectPath": "/Users/phamcuong/C#/Slave/Slave.csproj",
-      "packagesPath": "/Users/phamcuong/.nuget/packages/",
-      "outputPath": "/Users/phamcuong/C#/Slave/obj/",
+      "projectPath": "C:\\Users\\trick\\source\\repos\\Selenium\\Slave.csproj",
+      "packagesPath": "C:\\Users\\trick\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\trick\\source\\repos\\Selenium\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files\\DevExpress 22.2\\Components\\Offline Packages",
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "/Users/phamcuong/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\trick\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 22.2.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
       ],
       "sources": {
-        "/usr/local/share/dotnet/library-packs": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\DevExpress 22.2\\Components\\System\\Components\\Packages": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
+        "D:\\mype": {},
+        "https://api.nuget.org/v3/index.json": {},
+        "https://nuget.devexpress.com/bxy9tU2LCJDCz5jnWBoRykXUu9bj7wwA4ROBTTu5vrUlsWMNVG/api": {}
       },
       "frameworks": {
         "net7.0": {
@@ -219,6 +258,10 @@
           "DotNetSeleniumExtras.WaitHelpers": {
             "target": "Package",
             "version": "[3.11.0, )"
+          },
+          "Mype.Common": {
+            "target": "Package",
+            "version": "[1.0.1, )"
           },
           "Selenium.Support": {
             "target": "Package",
@@ -249,7 +292,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.302/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
       }
     }
   }

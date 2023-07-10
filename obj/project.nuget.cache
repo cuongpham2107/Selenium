@@ -1,14 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "kKFglRud+eoPX5YNvCzWzPvo+zzqTmYXKDFmt4a83vLxIekKos4gu5TYKc+Hz40fkP54vLBMoKhYa92RH6mllw==",
+  "dgSpecHash": "cykzKx4FqfmbaPO31TYbTsyoKErszhwkazfsHfJZmS4/RyAUh6lv33RsjZIAmbrWxB20fcDmP7rqbYlqL1vHNw==",
   "success": true,
-  "projectFilePath": "/Users/phamcuong/C#/Slave/Slave.csproj",
+  "projectFilePath": "C:\\Users\\trick\\source\\repos\\Selenium\\Slave.csproj",
   "expectedPackageFiles": [
-    "/Users/phamcuong/.nuget/packages/dotnetseleniumextras.waithelpers/3.11.0/dotnetseleniumextras.waithelpers.3.11.0.nupkg.sha512",
-    "/Users/phamcuong/.nuget/packages/newtonsoft.json/13.0.1/newtonsoft.json.13.0.1.nupkg.sha512",
-    "/Users/phamcuong/.nuget/packages/selenium.support/4.10.0/selenium.support.4.10.0.nupkg.sha512",
-    "/Users/phamcuong/.nuget/packages/selenium.webdriver/4.10.0/selenium.webdriver.4.10.0.nupkg.sha512",
-    "/Users/phamcuong/.nuget/packages/selenium.webdriver.chromedriver/114.0.5735.9000/selenium.webdriver.chromedriver.114.0.5735.9000.nupkg.sha512"
+    "C:\\Users\\trick\\.nuget\\packages\\dotnetseleniumextras.waithelpers\\3.11.0\\dotnetseleniumextras.waithelpers.3.11.0.nupkg.sha512",
+    "C:\\Users\\trick\\.nuget\\packages\\mype.common\\1.0.1\\mype.common.1.0.1.nupkg.sha512",
+    "C:\\Users\\trick\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
+    "C:\\Users\\trick\\.nuget\\packages\\selenium.support\\4.10.0\\selenium.support.4.10.0.nupkg.sha512",
+    "C:\\Users\\trick\\.nuget\\packages\\selenium.webdriver\\4.10.0\\selenium.webdriver.4.10.0.nupkg.sha512",
+    "C:\\Users\\trick\\.nuget\\packages\\selenium.webdriver.chromedriver\\114.0.5735.9000\\selenium.webdriver.chromedriver.114.0.5735.9000.nupkg.sha512"
   ],
   "logs": []
 }
