@@ -1,14 +1,17 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Interactions;
 
 namespace Slave
 {
     class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             int TimeToWatchVideo = new Random().Next(5,7);
+            DateTime startTime = DateTime.Now;
+            TimeSpan timeOut = TimeSpan.FromDays(1);
             string[] comments = {
                 "Video này thực sự tuyệt vời! Tôi rất ấn tượng với cách nó truyền đạt thông điệp sâu sắc và truyền cảm hứng.",
                 "Các hình ảnh và âm nhạc được lựa chọn tốt và tạo ra một trải nghiệm tuyệt vời",
@@ -48,6 +51,8 @@ namespace Slave
             string email = "quynhdonghy2001@gmail.com";
             string password = "Cuonggiun1";
             IWebDriver driver = new ChromeDriver();
+            Actions actions = new Actions(driver);
+
             FilmScriptLoginGoogle(driver, email, password);
 
             ((IJavaScriptExecutor)driver).ExecuteScript("window.open();");
@@ -60,13 +65,23 @@ namespace Slave
                     Extension.WriteLine($"Tìm kiếm video mới : {keyword}",ConsoleColor.Green);
                     FilmScriptYoutobe(driver, keyword,channels,comments,icons,TimeToWatchVideo);
                 }
+                if (DateTime.Now - startTime >= timeOut)
+                {
+                    break; 
+                }
+                Thread.Sleep(1000); 
             }
+            driver.Quit();
         }
-         public static void FilmScriptLoginGoogle(IWebDriver driver, string email, string password){
+        public static void FilmScriptLoginGoogle(IWebDriver driver, string email, string password){
             Google google = new Google(driver);
-            google.GoToUrl("https://accounts.google.com/v3/signin/identifier?dsh=S939872770%3A1688652533620486&continue=https%3A%2F%2Faccounts.google.com%2F&followup=https%3A%2F%2Faccounts.google.com%2F&ifkv=AeDOFXh_AcXj9pCvV6n6kKDr_X-OmJIlrLiAGpsZgXP5j00xZzxAPP7wwv4Q5CtAbZMzfDWdbSEWng&passive=1209600&flowName=GlifWebSignIn&flowEntry=ServiceLogin");
-            google.EnterEmail(email); 
-            google.EnterPassword(password);
+            google.GoToUrl("https://accounts.google.com");
+            if(google.CheckLoginGoogle() == true)
+            {
+                google.EnterEmail(email); 
+                google.EnterPassword(password);
+            }
+            
         }
         public static void FilmScriptYoutobe(IWebDriver driver, string keyword, string[] channels, string[] comments, string[] icons, int TimeToWatchVideo){
             Youtobe youtobe = new Youtobe(driver);

@@ -23,7 +23,6 @@ namespace Slave
         private By elementButtonComment => By.XPath("/html/body/ytd-app/div[1]/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[2]/ytd-comments/ytd-item-section-renderer/div[1]/ytd-comments-header-renderer/div[5]/ytd-comment-simplebox-renderer/div[3]/ytd-comment-dialog-renderer/ytd-commentbox/div[2]/div/div[4]/div[5]/ytd-button-renderer[2]/yt-button-shape/button");
         private By elementLinkTabRight => By.CssSelector(".yt-simple-endpoint.inline-block.style-scope.ytd-thumbnail");
         private By elementChannelTabRight => By.CssSelector("a.yt-simple-endpoint.style-scope.ytd-compact-video-renderer");
-        //By.CssSelector("yt-formatted-string#text.style-scope.ytd-channel-name");
         private By elementChannelCurrent => By.XPath("/html/body/ytd-app/div[1]/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[2]/ytd-watch-metadata/div/div[2]/div[1]/ytd-video-owner-renderer/div[1]/ytd-channel-name/div/div/yt-formatted-string/a");
         public void GotoUrl(string url = "https://www.youtube.com")
         {
