@@ -17,14 +17,14 @@ namespace Slave
     {
         public string ButtonIconSearch { get; set; } = "/html/body/ytd-app/div[1]/div/ytd-masthead/div[4]/div[2]/yt-icon-button/button";
         public string InputSearch { get; set; } = "search_query";
-        public string FirstVideo { get; set; } = "ytd-video-renderer";
+        public string FirstVideo { get; set; } = "a.yt-simple-endpoint.style-scope.ytd-video-renderer";
         public string LikeVideo { get; set; } = "/html/body/ytd-app/div[1]/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[2]/ytd-watch-metadata/div/div[2]/div[2]/div/div/ytd-menu-renderer/div[1]/ytd-segmented-like-dislike-button-renderer/yt-smartimation/div/div[1]/ytd-toggle-button-renderer/yt-button-shape/button";
         public string SubscribeVideo { get; set; } = "/html/body/ytd-app/div[1]/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[2]/ytd-watch-metadata/div/div[2]/div[1]/div/ytd-subscribe-button-renderer/yt-smartimation/yt-button-shape/button";
         public string Commnent { get; set; } = "/html/body/ytd-app/div[1]/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[2]/ytd-comments/ytd-item-section-renderer/div[1]/ytd-comments-header-renderer/div[5]/ytd-comment-simplebox-renderer/div[1]";
         public string InputComment { get; set; } = "/html/body/ytd-app/div[1]/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[2]/ytd-comments/ytd-item-section-renderer/div[1]/ytd-comments-header-renderer/div[5]/ytd-comment-simplebox-renderer/div[3]/ytd-comment-dialog-renderer/ytd-commentbox/div[2]/div/div[2]/tp-yt-paper-input-container/div[2]/div/div[1]/ytd-emoji-input/yt-user-mention-autosuggest-input/yt-formatted-string/div";
         public string ButtonComment { get; set; } = "/html/body/ytd-app/div[1]/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[2]/ytd-comments/ytd-item-section-renderer/div[1]/ytd-comments-header-renderer/div[5]/ytd-comment-simplebox-renderer/div[3]/ytd-comment-dialog-renderer/ytd-commentbox/div[2]/div/div[4]/div[5]/ytd-button-renderer[2]/yt-button-shape/button";
         public string ChannelTabsRight { get; set; } = "a.yt-simple-endpoint.style-scope.ytd-compact-video-renderer";
-        public string LinkTabsRight { get; set; } = ".yt-simple-endpoint.inline-block.style-scope.ytd-thumbnail";
+        public string LinkTabsRight { get; set; } = "a.yt-simple-endpoint.style-scope.ytd-compact-video-renderer";
         public string ChannelCurrent { get; set; } = "/html/body/ytd-app/div[1]/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[2]/ytd-watch-metadata/div/div[2]/div[1]/ytd-video-owner-renderer/div[1]/ytd-channel-name/div/div/yt-formatted-string/a";   
     }
     /// <summary>

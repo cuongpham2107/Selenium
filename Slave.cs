@@ -3,6 +3,9 @@ using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Interactions;
 using Common;
+using System.Text;
+using System.Threading.Channels;
+using System.Drawing;
 
 namespace Slave
 {
@@ -11,7 +14,9 @@ namespace Slave
         static ConfigChrome _config = ConfigManager<ConfigChrome>.Instance.Config;
         public static void Main(string[] args)
         {
-            int TimeToWatchVideo = new Random().Next(5,7);
+            Console.OutputEncoding = Encoding.UTF8;
+
+            int TimeToWatchVideo = new Random().Next(5, 7);
             DateTime startTime = DateTime.Now;
             TimeSpan timeOut = TimeSpan.FromDays(1);
             string[] comments = {
@@ -39,7 +44,7 @@ namespace Slave
                 "Phần mềm quản lý - Sử dụng Devexpress XAF, Build 2 nền tảng Web và Win cùng 1 code logic",
                 "Tạo Calendar chấm công bằng PopupWindowShowAction trong Devexpress",
                 "Phần mềm quản lý đề tài khoa học công nghệ, Sử dụng C#",
-                "Cách sử dụng và chạy phần mềm quản lý Kho sử dụng Devexpress Xaf",
+                "Cách sử dụng và chạy phần mềm quản lý Kho sử dụng Dev                                                                                                                                                                                                                                                                   express Xaf",
                  "Add module google map in Devexpress XAF Blazor",
             };
             string[] channels = {
@@ -50,22 +55,40 @@ namespace Slave
                 "TUI TÊN BÔ",
                 "VieShows",
             };
+            string[] urls = {
+                "https://www.youtube.com/watch?v=kHy47g1iGUA",
+                "https://www.youtube.com/watch?v=13wbFpF8jdc",
+                "https://www.youtube.com/watch?v=CRCmbMT3LRw",
+                "https://www.youtube.com/watch?v=kqqTCoTSsmQ",
+                "https://www.youtube.com/watch?v=vB7KTj7rH4w",
+                "https://www.youtube.com/watch?v=A_SWGE5LmJo",
+                "https://www.youtube.com/watch?v=RRtP40txW0Y"
+            };
             string email = "quynhdonghy2001@gmail.com";
             string password = "Cuonggiun1";
 
-            string profileID = "64a3d2cd6bc6bb5b9f013500";
-
+            //string profileID = "64a3d2cd6bc6bb5b9f013500";
+            Console.WriteLine("Point X: ");
+            int x = int.Parse(Console.ReadLine());
+            Console.WriteLine("Point Y: ");
+            int y = int.Parse(Console.ReadLine());
             ChromeOptions options = new();
-            options.BinaryLocation = _config.BinaryLocation;
-            options.AddArgument(_config.UserDataDir.Replace("{id}", profileID));
-            options.AddArgument(_config.Extension.Replace("{id}", profileID));
-            options.AddArguments("--disable-default-apps", "--disable-extensions");
-            options.AddArguments(_config.Arguments);
+            //options.BinaryLocation = _config.BinaryLocation;
+            //options.AddArgument(_config.UserDataDir.Replace("{id}", profileID));
+            //options.AddArgument(_config.Extension.Replace("{id}", profileID));
+            //options.AddArguments("--disable-default-apps", "--disable-extensions");
+            //options.AddArguments(_config.Arguments);
+            
+            IWebDriver driver = new ChromeDriver(options);
+            driver.Manage().Window.Position = new System.Drawing.Point(x, y);
+            driver.Manage().Window.Size = new System.Drawing.Size(450, 450);
 
-            IWebDriver driver = new ChromeDriver();
+            // Get the position of the Chrome window
+           
+            Point windowPosition = driver.Manage().Window.Position;
+            // Print the window position
+            Console.WriteLine($"The position of the Chrome window is: {windowPosition.X}, {windowPosition.Y}");
 
-            driver.Manage().Window.Size = new System.Drawing.Size(350, 350);
-            Actions actions = new Actions(driver);
             FilmScriptLoginGoogle(driver, email, password);
 
             ((IJavaScriptExecutor)driver).ExecuteScript("window.open();");
@@ -76,7 +99,8 @@ namespace Slave
                 {
                     Console.WriteLine("(==================================================)");
                     Extension.WriteLine($"Tìm kiếm video mới : {keyword}", ConsoleColor.Green);
-                    FilmScriptYoutobe(driver, keyword, channels, comments, icons, TimeToWatchVideo);
+                    FilmScriptYoutobeAndChannel(driver, keyword, channels, comments, icons, TimeToWatchVideo);
+                   //FilmScriptYoutobeAndUrls(driver, keyword, urls, comments, icons, TimeToWatchVideo);
                 }
                 if (DateTime.Now - startTime >= timeOut)
                 {
@@ -97,34 +121,74 @@ namespace Slave
             }
             
         }
-        public static void FilmScriptYoutobe(IWebDriver driver, string keyword, string[] channels, string[] comments, string[] icons, int TimeToWatchVideo){
+        public static void FilmScriptYoutobeAndUrls(IWebDriver driver, string keyword, string[] urls, string[] comments, string[] icons, int TimeToWatchVideo)
+        {
             Youtobe youtobe = new Youtobe(driver);
             youtobe.GotoUrl("https://www.youtube.com");
             youtobe.SearchKeyword(keyword);
-            Thread.Sleep(TimeSpan.FromMinutes(1));
+            Thread.Sleep(TimeSpan.FromMinutes(TimeToWatchVideo));
             youtobe.LikeVideo();
+            Thread.Sleep(TimeSpan.FromSeconds(10));
             youtobe.Subscribe();
+            Thread.Sleep(TimeSpan.FromSeconds(10));
             youtobe.CommentVideo(comments, icons);
+            Thread.Sleep(TimeSpan.FromSeconds(30));
             int check = 0;
             while (true)
             {
-                foreach (string channel in channels)
+                foreach (string url in urls)
                 {
-                    Extension.WriteLine($"Channel cần tìm kiếm: {channel}",ConsoleColor.Green);
-                    youtobe.ChannelTabVideo(channel);
+                    Extension.WriteLine($"Url cần tìm kiếm: {url}", ConsoleColor.Green);
+                    youtobe.ChooseLinkTabsVideo(url,keyword);
+                    Thread.Sleep(TimeSpan.FromMinutes(TimeToWatchVideo));
                     youtobe.LikeVideo();
+                    Thread.Sleep(TimeSpan.FromSeconds(10));
                     youtobe.Subscribe();
+                    Thread.Sleep(TimeSpan.FromSeconds(10));
                     youtobe.CommentVideo(comments, icons);
-                    Thread.Sleep(TimeSpan.FromMinutes(1));
+                    Thread.Sleep(TimeSpan.FromSeconds(30));
                     check++;
                 }
-                if(check == channels.Length)
+                if (check == urls.Length)
                 {
                     break;
                 }
             }
         }
-        
+        public static void FilmScriptYoutobeAndChannel(IWebDriver driver, string keyword, string[] channels,string[] comments, string[] icons, int TimeToWatchVideo){
+            Youtobe youtobe = new Youtobe(driver);
+            youtobe.GotoUrl("https://www.youtube.com");
+            youtobe.SearchKeyword(keyword);
+            Thread.Sleep(TimeSpan.FromMinutes(TimeToWatchVideo));
+            youtobe.LikeVideo();
+            Thread.Sleep(TimeSpan.FromSeconds(10));
+            youtobe.Subscribe();
+            Thread.Sleep(TimeSpan.FromSeconds(10));
+            youtobe.CommentVideo(comments, icons);
+            Thread.Sleep(TimeSpan.FromSeconds(30));
+            int check = 0;
+            while (true)
+            {
+                foreach (string channel in channels)
+                {
+                    Extension.WriteLine($"Channel cần tìm kiếm: {channel}", ConsoleColor.Green);
+                    youtobe.ChannelTabVideo(channel);
+                    Thread.Sleep(TimeSpan.FromMinutes(TimeToWatchVideo));
+                    youtobe.LikeVideo();
+                    Thread.Sleep(TimeSpan.FromSeconds(10));
+                    youtobe.Subscribe();
+                    Thread.Sleep(TimeSpan.FromSeconds(10));
+                    youtobe.CommentVideo(comments, icons);
+                    Thread.Sleep(TimeSpan.FromSeconds(30));
+                    check++;
+                }
+                if (check == channels.Length)
+                {
+                    break;
+                }
+            }
+        }
+
     }
 
 }

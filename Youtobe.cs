@@ -24,7 +24,7 @@ namespace Slave
         private By elementInputComment => By.XPath(_config.Commnent);
         private By elementInputCommentText => By.XPath(_config.InputComment);
         private By elementButtonComment => By.XPath(_config.ButtonComment);
-        private By elementLinkTabRight => By.CssSelector("");
+        private By elementLinkTabRight => By.CssSelector(_config.LinkTabsRight);
         private By elementChannelTabRight => By.CssSelector(_config.ChannelTabsRight);
         private By elementChannelCurrent => By.XPath(_config.ChannelCurrent);
         public void GotoUrl(string url = "https://www.youtube.com")
@@ -179,30 +179,34 @@ namespace Slave
                 }
             }
         }
-        public void ChooseLinkTabsVideo(string[] urls)
+        public void ChooseLinkTabsVideo(string url,string keyword)
         {
-            List<IWebElement> elements = wait.Until(driver => driver.FindElements(elementLinkTabRight).ToList());
-            bool found = false;
-            foreach (IWebElement item in elements)
+            try
             {
-                string href = item.GetAttribute("href");
-                Console.WriteLine(href);
-                foreach (string url in urls)
+                bool check = false;
+                List<IWebElement> elements = wait.Until(driver => driver.FindElements(elementLinkTabRight).ToList());
+                foreach (IWebElement item in elements)
                 {
+                    string href = item.GetAttribute("href");
                     if (href == url)
                     {
-                        Console.WriteLine("===========");
-                        Console.WriteLine(href, url);
                         Actions.MoveToElement(item).Click().Perform();
-                        found = true;
+                        Extension.WriteLine("Đã chuyển sang xem video mới thành công", ConsoleColor.Blue);
+                        check = true;
                         break;
                     }
                 }
-                if (found)
+                if(check == false)
                 {
-                    break;
+                    Extension.WriteLine($"Tìm kiếm từ khóa mới: {keyword}", ConsoleColor.Blue);
+                    this.SearchKeyword(keyword);
                 }
             }
+            catch (Exception e)
+            {
+                Extension.WriteLine("Lỗi: " + e, ConsoleColor.Red);
+            }
+            
             //driver.Quit();
         }
         public void ChannelTabVideo(string channel)
