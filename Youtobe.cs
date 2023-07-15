@@ -55,9 +55,9 @@ namespace Slave
                 Thread.Sleep(2000);
                 ChooseVideo();
             }
-            catch (NoSuchElementException)
+            catch (Exception e)
             {
-                Extension.WriteLine("Không tìm thấy phần tử.", ConsoleColor.Red);
+                Extension.WriteLine($"lỗi: {e}", ConsoleColor.Red);
             }
         }
         public void ChooseVideo()
@@ -69,9 +69,9 @@ namespace Slave
                 Actions.MoveToElement(element).Click().Perform();
                 // Thread.Sleep(TimeSpan.FromMinutes(time));
             }
-            catch (NoSuchElementException)
+            catch (Exception e)
             {
-                Extension.WriteLine("Không tìm thấy phần tử.", ConsoleColor.Red);
+                Extension.WriteLine($"lỗi: {e}", ConsoleColor.Red);
             }
         }
         public void LikeVideo()

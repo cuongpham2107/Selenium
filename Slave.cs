@@ -67,7 +67,7 @@ namespace Slave
             string email = "quynhdonghy2001@gmail.com";
             string password = "Cuonggiun1";
 
-            //string profileID = "64a3d2cd6bc6bb5b9f013500";
+            string profileID = "64a3d2cd6bc6bb5b9f013500";
             Console.WriteLine("Point X: ");
             int x = int.Parse(Console.ReadLine());
             Console.WriteLine("Point Y: ");
